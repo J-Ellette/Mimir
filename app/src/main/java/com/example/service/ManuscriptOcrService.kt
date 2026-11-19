@@ -37,10 +37,10 @@ class ManuscriptOcrService {
 
     @OptIn(ExperimentalGetImage::class)
     suspend fun scanCameraFrame(imageProxy: ImageProxy): ManuscriptScanOutput {
-        val mediaImage = imageProxy.image
-            ?: throw IllegalStateException("Camera frame has no image buffer")
-        val inputImage = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
         return try {
+            val mediaImage = imageProxy.image
+                ?: throw IllegalStateException("Camera frame has no image buffer")
+            val inputImage = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
             processInputImage(inputImage)
         } finally {
             imageProxy.close()

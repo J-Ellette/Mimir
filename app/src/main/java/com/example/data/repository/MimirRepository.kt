@@ -217,6 +217,7 @@ class MimirRepository(
         dao.insertAnnotations(payload.annotations.map { it.toEntity() })
         dao.insertPlanProgressList(payload.planProgress.map { it.toEntity() })
         dao.insertFlashcardProgressList(payload.flashcards.map { it.toEntity() })
+        dao.insertDiscussionPosts(payload.discussions.map { it.toEntity() })
         dao.insertManuscripts(payload.manuscripts.map { it.toEntity() })
         dao.insertLessonProgressList(payload.lessons.map { it.toEntity() })
         val allPacks = dao.observeCommentaryPacks().first()

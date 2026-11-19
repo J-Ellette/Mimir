@@ -3,11 +3,13 @@ package com.example
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.example.data.local.BackupAnnotationDto
+import com.example.data.local.BackupDiscussionDto
 import com.example.data.local.BackupSettingsDto
 import com.example.data.local.DailyReadingDataStore
 import com.example.data.local.DailyReadingProgress
 import com.example.data.local.DailyReadingStreakCalculator
 import com.example.data.local.EncryptedBackupManager
+import com.example.data.local.EncryptedBackupManager.toEntity
 import com.example.data.local.EntitlementManager
 import com.example.data.local.MimirBackupPayload
 import com.example.data.local.MimirDatabase
@@ -157,6 +159,16 @@ class MimirCoreTest {
 
             val searchMatches = dao.searchVerses("Mímis").first()
             assertTrue(searchMatches.isNotEmpty())
+
+            dao.insertDiscussionPosts(
+                listOf(
+                    BackupDiscussionDto("voluspa_1", "Reader 1", "source", "First post", 100L).toEntity(),
+                    BackupDiscussionDto("voluspa_1", "Reader 2", "interpretation", "Second post", 200L).toEntity()
+                )
+            )
+            val restoredDiscussions = dao.getAllDiscussionsOnce()
+            assertEquals(2, restoredDiscussions.size)
+            assertEquals(setOf("First post", "Second post"), restoredDiscussions.map { it.body }.toSet())
         } finally {
             db.close()
         }

@@ -6,6 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.data.model.BookEntity
 import com.example.data.model.ChapterEntity
 import com.example.data.model.CommentaryPackEntity
@@ -61,6 +63,22 @@ abstract class MimirDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: MimirDatabase? = null
 
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS `lesson_progress` (
+                        `lessonId` TEXT NOT NULL,
+                        `isCompleted` INTEGER NOT NULL,
+                        `bestScore` INTEGER NOT NULL,
+                        `xpEarned` INTEGER NOT NULL,
+                        PRIMARY KEY(`lessonId`)
+                    )
+                    """.trimIndent()
+                )
+            }
+        }
+
         fun getInstance(context: Context): MimirDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -68,7 +86,7 @@ abstract class MimirDatabase : RoomDatabase() {
                     MimirDatabase::class.java,
                     "mimir_corpus.db"
                 )
-                    .fallbackToDestructiveMigration(dropAllTables = true)
+                    .addMigrations(MIGRATION_1_2)
                     .build()
                 INSTANCE = instance
                 instance
