@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Mímir</string>
+    <string name="widget_description">Daily Hávamál stanza or saga line from Mímir</string>
+    <string name="nav_home">Well</string>
+    <string name="nav_library">Library</string>
+    <string name="nav_runes">Runes</string>
+    <string name="nav_study">Study</string>
+    <string name="nav_plans">Paths</string>
+    <string name="share_runestone_title">Share Runestone Card</string>
+    <string name="biometric_prompt_title">Unlock Mímir Vault</string>
+    <string name="biometric_prompt_subtitle">Authenticate to view private study notes and digitized manuscripts</string>
+</resources>
